@@ -1,12 +1,16 @@
 defmodule RentMe.Locations.Server do
     use GenServer
+    alias RentMe.Couch.Db, as: Db
     #new location? make new database
     #locations have users and items
 
-    #use process registry to hold names of cities?
+    #log when a city was created in RentMe db
     # 
     def start_link(location) do
-        GenServer.start_link(__MODULE__, location, name: {:global, location})
+        case init_db(location) do
+            {:ok, db_config} -> GenServer.start_link(__MODULE__, [location, db_config], name: {:global, location})
+            {:error, msg} -> {:error, "failed to create database"}
+        end 
     end
 
     def handle_call(:state, _from, state) do
@@ -15,5 +19,9 @@ defmodule RentMe.Locations.Server do
 
     def state(location) do
         GenServer.call({:global, location}, :state)
+    end
+
+    def init_db(location) do
+        db.init(location)
     end
 end
