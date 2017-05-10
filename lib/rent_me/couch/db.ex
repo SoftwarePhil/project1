@@ -5,27 +5,18 @@ defmodule RentMe.Couch.Db do
 
     #http://127.0.0.1:5984/_utils/index.html
     @couch_config %{protocol: "http", hostname: "localhost",database: "rent_me", port: 5984}
-    @rent_me %{protocol: "http", hostname: "localhost",database: "rent_me_main", port: 5984}
 
     def init_db(name) do
         db = db_config(name)
-        Couchdb.Connector.Storage.storage_up(db)
-        {:ok, db}
+        
+        case Couchdb.Connector.Storage.storage_up(db) do
+            {:ok, _msg} -> {:ok, db}
+            {:error, msg} -> {:error, msg}
+        end
     end
 
     def db_config(name) do
-        %{@couch_config | database: "rent_me"<>name}
-    end
-
-    def init_rent_me do
-        Couchdb.Connector.Storage.storage_up(@rent_me)
-        write_document(@rent_me, Poison.encode!(%{"locations"=>[], "user_db"=>"rent_me_users"}))
-        {:ok, db_config} = init_db(rent_me_users)
-        {:ok, db_config}
-    end
-
-    def rent_me do
-        @rent_me
+        %{@couch_config | database: "rent_me_"<>name}
     end
 
 
@@ -82,9 +73,11 @@ defmodule RentMe.Couch.Db do
             end
     end
 
+    @doc"""
+        creates a new document with some id and body
+    """
     def write_document(db, key, body) do
-        json = Poison.encode!(%{"body"=>body})
-        case Writer.create(db, json, key) do
+        case Writer.create(db, body, key) do
             {:ok, _, _} -> {:ok, "document added"}
             {:error, _, _} -> {:error, "cound not add document"}
         end
