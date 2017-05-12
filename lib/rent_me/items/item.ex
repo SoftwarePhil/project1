@@ -15,6 +15,22 @@ defmodule RentMe.Items.Item do
             }
     end
 
+      def to_struct(%{"name"=>name, "user"=>user, "location"=>location, 
+                      "price" => price, "tags"=>tags, "description"=>description, 
+                      "picture"=>picture, "created"=>created, "active"=>active}) do
+         %__MODULE__{
+                name: name, 
+                user: user, 
+                active: active, 
+                location: location, 
+                price: price, 
+                tags: tags, 
+                description: description, 
+                picture: picture,
+                created: created
+            }
+    end
+
     def id(city, user, name) do
         "#{city}:#{user}:#{name}"
     end

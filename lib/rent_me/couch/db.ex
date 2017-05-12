@@ -2,6 +2,7 @@ defmodule RentMe.Couch.Db do
     alias Couchdb.Connector.Writer
     alias Couchdb.Connector.Reader
     alias Couchdb.Connector
+    alias RentMe.Couch.Util 
 
     #http://127.0.0.1:5984/_utils/index.html
     @couch_config %{protocol: "http", hostname: "localhost",database: "rent_me", port: 5984}
@@ -59,9 +60,26 @@ defmodule RentMe.Couch.Db do
     """  
     def get_document(db, key, error) do
         case Reader.get(db, key) do
-            {:ok, data} -> {:ok, Poison.decode!(data)}
+            {:ok, data} -> 
+                {:ok, Poison.decode!(data)}
             {:error, _} -> {:error, error}  
         end
+    end
+
+    @doc"""
+    If a document has a list, this will appened a single item to that list
+    takes in the db, key field, item and error message
+    """
+    def append_to_document(db, key, field, item, error) do
+        with {:ok, data} <- get_document(db, key, error),
+             new_list <-  Util.add_to_list(data[field], item),
+             update_document(db, data, field, new_list, error) do
+                 {:ok, item}
+                 
+        else
+            {:error, msg} -> {:error, msg}
+        end
+     
     end
 
     def delete_document(db, key, error) do

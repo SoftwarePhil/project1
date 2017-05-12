@@ -1,5 +1,6 @@
 defmodule RentMe.Items.Store do
     alias RentMe.Items.Item, as: Item
+    alias RentMe.Couch.Db, as: Db
 
     def create_ets(location) do
         id = :ets.new(:location, [:set, :public])
@@ -7,8 +8,16 @@ defmodule RentMe.Items.Store do
         id
     end
 
-    def add_item({ets, city}, item_struct = %Item{user: user, name: name}) do
+    def remake_ets(location, database) do
+        id = :ets.new(:location, [:set, :public])
+        :ets.insert(id, {:location, location})
+  
+        reload_items(database)
+        |>Enum.each(fn(item) -> add_item({id, location}, Item.to_struct(item)) end)
+        id
+    end
 
+    def add_item({ets, city}, item_struct = %Item{user: user, name: name}) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
         item = {Item.id(city, user, name), item_struct}
         case :ets.insert(ets, item) do
@@ -20,5 +29,16 @@ defmodule RentMe.Items.Store do
 
     def all_items(ets) do
         :ets.tab2list(ets)
+    end
+
+    def reload_items(database) do
+        {:ok, res} = Db.get_document(database, "items", "failed to get item list")
+
+        res
+        |>(fn(result) -> result["list"] end).()
+        |>Enum.map(fn(item) -> 
+                        {:ok, fetch} = Db.get_document(database, item, "item-not-found") 
+                        fetch
+                    end)
     end
 end
