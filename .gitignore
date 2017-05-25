@@ -1,8 +1,8 @@
 # App artifacts
-/_build
-/db
-/deps
-/*.ez
+/api-rent-me/_build
+/api-rent-me/db
+/api-rent-me/deps
+*.ez
 
 # Generated on crash by the VM
 erl_crash.dump
