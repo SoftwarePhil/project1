@@ -14,3 +14,47 @@ erl_crash.dump
 # secrets file as long as you replace its contents by environment
 # variables.
 /config/prod.secret.exs
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/web-rent-me/dist
+/web-rent-me/tmp
+/web-rent-me/out-tsc
+
+# dependencies
+/web-rent-me/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/web-rent-me/.sass-cache
+/web-rent-me/connect.lock
+/web-rent-me/coverage
+/web-rent-me/libpeerconnection.log
+/web-rent-menpm-debug.log
+/web-rent-metestem.log
+/web-rent-me/typings
+
+# e2e
+/web-rent-me/e2e/*.js
+/web-rent-me/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+
