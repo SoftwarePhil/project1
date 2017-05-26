@@ -17,10 +17,15 @@ defmodule RentMe.Web.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", RentMe do
-  #   pipe_through :api
-  # end
+  scope "/api", RentMe do
+    pipe_through :api
+   
+    post "/user/new", Web.UserController, :new
+    post "/user/login", Web.UserController, :login 
+    post "/user/key", Web.UserController, :key
+  end
 end
