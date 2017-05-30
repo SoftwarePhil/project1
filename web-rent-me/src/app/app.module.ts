@@ -1,10 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+
+import { routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login.component';
+import { RentMeService } from './rent-me.service';
 
 @NgModule({
   declarations: [
@@ -14,9 +17,11 @@ import { LoginComponent } from './login.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    ReactiveFormsModule,
+    HttpModule,
+    routing
   ],
-  providers: [],
+  providers: [RentMeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

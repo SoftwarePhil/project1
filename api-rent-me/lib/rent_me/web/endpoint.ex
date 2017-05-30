@@ -38,5 +38,6 @@ defmodule RentMe.Web.Endpoint do
     key: "_rent_me_key",
     signing_salt: "8jo2dFhv"
 
+  plug CORSPlug
   plug RentMe.Web.Router
 end
