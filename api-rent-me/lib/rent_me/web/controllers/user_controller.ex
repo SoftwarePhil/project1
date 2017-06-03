@@ -4,9 +4,8 @@ defmodule RentMe.Web.UserController do
 
   #figure out how to use ECTO? might be worth it
   def new(conn,
-   %{"email"=> email, "password"=>password, "name"=>name, 
-   "location"=>location, "picture"=>picture, "bio"=>bio}) do
-        case User.new_user(email, password, name, location, picture, bio) do
+   %{"email"=> email, "password"=>password, "name"=>name, "location"=>location}) do
+        case User.new_user(email, password, name, location) do
             {:ok, user} ->
                 conn
                 |>json(user)
@@ -56,7 +55,7 @@ curl -X POST -H "Content-Type: application/json" -d '
 
 curl -X POST -H "Content-Type: application/json" -d '
 {"email":"test@gmail.com", "password":"123456", "name":"Phil", 
-"location":"Dallas, TX", "picture":"no-picture", "bio":"I rent things"}
+"location":"Dallas, TX"}
 ' "http://localhost:4000/api/user/new"
 """
 

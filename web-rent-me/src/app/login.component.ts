@@ -11,6 +11,7 @@ import { User } from './data'
 })
 export class LoginComponent {
    title = 'RentMe';
+   newUser: boolean = false; 
 
    constructor(public fb: FormBuilder, private rentMeService: RentMeService, private router: Router) {}
 
@@ -29,5 +30,9 @@ export class LoginComponent {
       r => console.log(<User>r),
       error => console.log("bad login")
     )
+  }
+
+  new_user(){
+    this.newUser = true
   }
 }

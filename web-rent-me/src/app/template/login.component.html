@@ -1,12 +1,14 @@
 <h1 align=center>{{title}}</h1>
 
-<div class="login-page">
+<div *ngIf="!newUser" class="login-page">
   <div class="form">
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="do_login($event)">
-      <input formControlName="email" type="email" placeholder="Enter Email"/>
-      <input formControlName="password" type="password" placeholder="Enter Password"/>
+      <input formControlName="email" type="email" placeholder="Enter Email" required/>
+      <input formControlName="password" type="password" placeholder="Enter Password" required/>
       <button>login</button>
-      <p class="message">Not registered? <a href="#">Create an account</a></p>
+      <p class="message">Not registered? <a (click)="new_user()">Create an account</a></p>
     </form>
   </div>
 </div>
+
+<div *ngIf="newUser"><create-user></create-user></div>

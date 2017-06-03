@@ -8,11 +8,13 @@ import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login.component';
 import { RentMeService } from './rent-me.service';
+import { CreateUserComponent } from './create-user.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,

@@ -1,19 +1,20 @@
 defmodule RentMe.Users.User do
-    alias RentMe.Couch.RentMe, as: RentMeDb
+    alias RentMe.Couch.Base, as: RentMeDb
     alias RentMe.Couch.Db, as: Db
 
     ##can the hash act as an api key??
     @enforce_keys [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created]
     defstruct [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created]
 
-    def new_user(email, password, name, location, picture, bio) do
+    #actual picture should be stored in seprate document
+    def new_user(email, password, name, location) do
         %__MODULE__{
             email: email,
             password_hash: hash(password),
             name: name,
             location: location,
-            picture: picture,
-            bio: bio,
+            picture: "picture",
+            bio: "bio",
             rating: 0,
             created: DateTime.to_string(DateTime.utc_now())
         }

@@ -1,4 +1,4 @@
-defmodule RentMe.Couch.RentMe do
+defmodule RentMe.Couch.Base do
     alias RentMe.Couch.Db, as: Db
 
     @moduledoc """

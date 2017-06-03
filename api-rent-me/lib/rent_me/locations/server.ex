@@ -1,7 +1,7 @@
 defmodule RentMe.Locations.Server do
     use GenServer
     alias RentMe.Couch.Db, as: Db
-    alias RentMe.Couch.RentMe, as: RentMeDb
+    alias RentMe.Couch.Base, as: Base
     alias RentMe.Items.Store, as: ItemStore
     alias RentMe.Items.Item, as: Item
     #locations have users and items
@@ -14,7 +14,7 @@ defmodule RentMe.Locations.Server do
     # 
     def start_link(city) do
         with {:ok, db_config} <- init_db(city),
-             {:ok, _db_config} <- RentMeDb.add_location(city, db_config),
+             {:ok, _db_config} <- Base.add_location(city, db_config),
              item_ets when item_ets != false <- ItemStore.create_ets(city),
              {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets}, name: server_name(city)) do 
                 {:ok, pid}

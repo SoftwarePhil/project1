@@ -29,4 +29,8 @@ export class RentMeService{
 
         return headers
     }
+
+    get_request(path) :Observable<any>{
+        return this.http.get(this.url + path).map(data => data.json())
+    }
 }

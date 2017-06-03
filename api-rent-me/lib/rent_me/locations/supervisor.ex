@@ -2,7 +2,7 @@ defmodule RentMe.Locations.Supervisor do
     use Supervisor
     import Supervisor.Spec
     alias RentMe.Locations.Server, as: Server
-    alias RentMe.Couch.RentMe, as: RentMeDb
+    alias RentMe.Couch.Base, as: RentMeDb
 
     #TODO:: when a Locations.Server crashes restart it with :add_location [{:reload, city_name}
     
