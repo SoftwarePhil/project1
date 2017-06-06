@@ -24,3 +24,6 @@
 # 
     curl http://localhost:4000/api/base/locations
 
+#
+response: ["Dallas, TX", "New York, NY", ...]
+

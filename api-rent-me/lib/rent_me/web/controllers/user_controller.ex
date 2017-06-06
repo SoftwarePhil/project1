@@ -11,6 +11,7 @@ defmodule RentMe.Web.UserController do
                 |>json(user)
             {:error, msg} ->
                 conn
+                |>put_status(:not_found)
                 |>json(%{error: msg}) 
         end
   end

@@ -2,7 +2,7 @@
 
 <div class="login-page">
   <div class="form">
-    <form class="login-form" [formGroup]="createUser" (ngSubmit)="newUser($event)">
+    <form [formGroup]="createUser" class="login-form" (ngSubmit)="newUser($event)">
       <input formControlName="name" type="name" placeholder="Name" required/>
       <input formControlName="email" type="email" placeholder="Email" required/>
       <input formControlName="password" type="password" placeholder="Password" required/>
@@ -15,6 +15,7 @@
       <button>Create</button>
        <p class="message">Have account? <a href="/start">Login</a></p>
     </form>
+    <div *ngIf="error"><b>{{error}}</b><div>
   </div>
 </div>
 

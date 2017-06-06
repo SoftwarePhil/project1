@@ -3,6 +3,7 @@ import { RentMeService } from './rent-me.service'
 import { Router }  from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { User } from './data'
+import { RentMeCookie } from './rent-me-cookie.service'
 
 @Component({
   selector: 'login',
@@ -13,7 +14,11 @@ export class LoginComponent {
    title = 'RentMe';
    newUser: boolean = false; 
 
-   constructor(public fb: FormBuilder, private rentMeService: RentMeService, private router: Router) {}
+   constructor(public fb: FormBuilder, private rentMeService: RentMeService, private router: Router, private rentMeCookie: RentMeCookie) {
+     if(rentMeCookie.get_user() != undefined){
+      this.router.navigate(['/rent'])
+     }
+   }
 
    public loginForm = this.fb.group({
     email: ["", Validators.required],
@@ -27,12 +32,17 @@ export class LoginComponent {
     //make a 'cookie service to save session'
     this.rentMeService.request({email, password}, "user/login")
     .subscribe(
-      r => console.log(<User>r),
+      u => this.login(u),
       error => console.log("bad login")
     )
   }
 
   new_user(){
     this.newUser = true
+  }
+
+  login(user: User){
+    this.rentMeCookie.set_user(user)
+    this.router.navigate(['/rent'])
   }
 }

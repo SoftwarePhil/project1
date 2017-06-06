@@ -1,0 +1,6 @@
+1. api key stuff
+2. location stuff, google maps api? other options?
+3. posting item for rent from web
+4. renting an item
+    4a. handling time passed?
+    4b. charging by the hour/day/minute?

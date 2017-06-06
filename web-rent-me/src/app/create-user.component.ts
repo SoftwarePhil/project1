@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RentMeService } from './rent-me.service'
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'create-user',
@@ -14,30 +15,39 @@ export class CreateUserComponent {
   email: string
   password: string
   name: string
+  createUser: FormGroup
+  error: string
 
-  constructor(public fb: FormBuilder, private rentMeService: RentMeService) {
+  constructor(public fb: FormBuilder, private rentMeService: RentMeService, private router: Router) {
     this.get_locations()
+    this.createUser = fb.group({
+      name: '',
+      email: '',
+      password: ''
+    })
   }
 
-  public createUser = this.fb.group({
-    name: ["", Validators.required],
-    email: ["", Validators.required],
-    password: ["", Validators.required]
-  });
 
   newUser(event: any){
-    console.log(this.createUser)
-    if(this.location != null){
+    if(this.location != null && this.createUser.status == "VALID"){
+      this.error = null
+      console.log("ok valid user")
       let email = this.createUser.value.email
       let password = this.createUser.value.password
       let name = this.createUser.value.name
 
       let user = {name, password, email, location:this.location}
-      console.log(user)
+     
 
-      //new user request here
+      this.rentMeService.request(user, "user/new").subscribe(
+        res=>this.router.navigate(['/']),
+        error => this.error = "failed to create user, server resonded with error " + error._body
+      )
 
       
+    }
+    else{
+      this.error = "Invlaid! All fields required"
     }
   }
 
@@ -50,9 +60,14 @@ export class CreateUserComponent {
 
   get_locations(){
     this.rentMeService.get_request("base/locations").subscribe(
-      loc=>this.choices = loc,
+      loc=>this.set_loc(loc),
       error=> this.choices = ["error getting location data"]
     )
+  }
+
+  private set_loc(loc){
+    this.choices = loc
+    this.location = loc[0]
   }
 
 }
