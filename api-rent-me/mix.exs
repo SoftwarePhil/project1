@@ -17,7 +17,7 @@ defmodule RentMe.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {RentMe, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :couchdb_connector]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :couchdb_connector, :comeonin]]
   end
 
   # Specifies which paths to compile per environment.
@@ -35,6 +35,7 @@ defmodule RentMe.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:couchdb_connector, "~> 0.5.0"},
-     {:cors_plug, "~> 1.1"},]
+     {:cors_plug, "~> 1.1"},
+     {:comeonin, "~> 3.0"}]
   end
 end

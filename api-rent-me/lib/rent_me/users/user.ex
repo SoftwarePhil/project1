@@ -2,7 +2,8 @@ defmodule RentMe.Users.User do
     alias RentMe.Couch.Base, as: RentMeDb
     alias RentMe.Couch.Db, as: Db
 
-    ##can the hash act as an api key??
+    ##should we have an ets table that holds key, and email??
+    ##api key should go in the header probably
     @enforce_keys [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created]
     defstruct [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created]
 
@@ -52,11 +53,11 @@ defmodule RentMe.Users.User do
     end
 
     def hash(password) do
-        password
+        Comeonin.Pbkdf2.hashpwsalt(password)
     end
 
     def password_match(password, hash) do
-        hash(password) == hash
+        Comeonin.Pbkdf2.checkpw(password, hash)
     end
 
     def to_struct(attrs) do

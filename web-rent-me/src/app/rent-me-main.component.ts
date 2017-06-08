@@ -16,6 +16,7 @@ export class RentMeMain {
 
   constructor(private rentMeService: RentMeService, private rentMeCookie: RentMeCookie, private router: Router) {
     this.user = this.rentMeCookie.get_user()
+    
     if(this.user == undefined){
       this.user = <User>{name: "not logged in"}
     }

@@ -31,4 +31,9 @@ export class RentMeCookie{
         return this.user
     }
 
+    remove_user_cookie(){
+        this.cookieService.removeAll()
+        this.user = undefined
+    }
+
 }
