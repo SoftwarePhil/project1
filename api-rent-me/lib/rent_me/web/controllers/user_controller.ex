@@ -1,10 +1,11 @@
 defmodule RentMe.Web.UserController do
   use RentMe.Web, :controller
   alias RentMe.Users.User, as: User
+  plug :valid_api_key? when action in [:api_key_test]
 
   #figure out how to use ECTO? might be worth it
   def new(conn,
-   %{"email"=> email, "password"=>password, "name"=>name, "location"=>location}) do
+  %{"email"=> email, "password"=>password, "name"=>name, "location"=>location}) do
         case User.new_user(email, password, name, location) do
             {:ok, user} ->
                 conn
@@ -17,7 +18,9 @@ defmodule RentMe.Web.UserController do
   end
 
   def new(conn, _) do
-     json(conn, %{error: "missing field from request"}) 
+     conn
+     |>put_status(:not_found)
+     |>json(%{error: "missing field from request"}) 
   end
 
   def login(conn, %{"email"=> email, "password"=>password}) do
@@ -41,6 +44,17 @@ defmodule RentMe.Web.UserController do
             conn
             |>put_status(:not_found)
             |>json(%{error: msg})
+    end
+  end
+
+  def api_key_test(conn, %{"test"=>msg}) do
+    email = conn.assigns[:user]
+    case email do
+        nil -> 
+            conn
+        _ ->
+             conn
+             |>json(%{msg=>email})
     end
   end
 end

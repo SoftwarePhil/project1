@@ -28,6 +28,7 @@ defmodule RentMe.Web do
 
       import RentMe.Web.Router.Helpers
       import RentMe.Web.Gettext
+      import RentMe.Helpers.AuthPlug
     end
   end
 

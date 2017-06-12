@@ -1,0 +1,1 @@
+1. make front end auth test

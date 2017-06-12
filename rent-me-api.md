@@ -19,11 +19,24 @@
     ' "http://localhost:4000/api/user/key"
 
 
+##### api key test
+#
+    curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-Busx0wUMf4A5jPlZHa8oGRApd6v0zxao" -d '
+        {"test":"hello"}
+    ' "http://localhost:4000/api/user/key_test"
+
+#
+    {"hello":"dp@gmail.com"}
+
+#
+
 # Base
 ##### locations
 # 
     curl http://localhost:4000/api/base/locations
 
 #
-response: ["Dallas, TX", "New York, NY", ...]
+    response: ["Dallas, TX", "New York, NY", ...]
+#
+
 

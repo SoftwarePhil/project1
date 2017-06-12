@@ -40,7 +40,7 @@ export class CreateUserComponent {
      
 
       this.rentMeService.request(user, "user/new").subscribe(
-        res=>this.router.navigate(['/']),
+        res=>window.location.reload(),
         error => this.error = "failed to create user, server resonded with error " + error._body
       )
 
