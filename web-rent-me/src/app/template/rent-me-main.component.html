@@ -1,2 +1,11 @@
 <header-component></header-component>
 <h1>Hello {{user.name}}</h1>
+<p>{{user.api_key}}</p>
+<div>
+<button (click)="api_key_test()">test</button>
+</div>
+
+<div>
+    <label for="bio">Bio:</label>
+    <input type="textarea" name="bio" [(ngModel)]="user.bio">
+</div>

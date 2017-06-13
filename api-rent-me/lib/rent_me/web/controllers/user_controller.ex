@@ -1,7 +1,7 @@
 defmodule RentMe.Web.UserController do
   use RentMe.Web, :controller
   alias RentMe.Users.User, as: User
-  plug :valid_api_key? when action in [:api_key_test]
+  plug :valid_api_key? when action in [:api_key_test, :bio]
 
   #figure out how to use ECTO? might be worth it
   def new(conn,
@@ -27,7 +27,7 @@ defmodule RentMe.Web.UserController do
     case User.login(email, password) do
         {:ok, user} ->
             conn
-            |>json(user)
+            |>render("user_private.json", user)
         {:error, msg} ->
             conn
             |>put_status(:not_found)
@@ -39,7 +39,7 @@ defmodule RentMe.Web.UserController do
     case User.login(email, password) do
         {:ok, user} ->
             conn
-            |>json(%{api_key: user.api_key})
+            |>render("user_api_key.json", user)
         {:error, msg} ->
             conn
             |>put_status(:not_found)
@@ -48,29 +48,34 @@ defmodule RentMe.Web.UserController do
   end
 
   def api_key_test(conn, %{"test"=>msg}) do
-    email = conn.assigns[:user]
-    case email do
+    case _email(conn) do
         nil -> 
             conn
-        _ ->
-             conn
-             |>json(%{msg=>email})
+        email ->
+            conn
+            |>json(%{msg=>email})
     end
   end
+
+  def bio(conn, %{"bio"=>bio}) do
+      with email when is_bitstring(email) <- _email(conn),
+           {:ok, _msg} <- User.bio(email, bio) do
+               conn
+               |>json(%{bio: bio})
+           else
+               {:error, msg} -> 
+                   conn
+                   |>put_status(:not_found)
+                   |>json(%{error: msg})
+               _ ->
+                   conn
+                   |>put_status(:not_found)
+                   |>json(%{error: "failed to update bio"})
+           end
+  end
+
+  defp _email(conn) do
+      conn.assigns[:user]
+  end
 end
-
-"""
-curl -X POST -H "Content-Type: application/json" -d '
-{"email":"test@test.com", "password":"1"}
-' "http://localhost:4000/api/user/login"
-
-curl -X POST -H "Content-Type: application/json" -d '
-{"email":"test@test.com", "password":"1"}
-' "http://localhost:4000/api/user/key"
-
-curl -X POST -H "Content-Type: application/json" -d '
-{"email":"test@gmail.com", "password":"123456", "name":"Phil", 
-"location":"Dallas, TX"}
-' "http://localhost:4000/api/user/new"
-"""
 

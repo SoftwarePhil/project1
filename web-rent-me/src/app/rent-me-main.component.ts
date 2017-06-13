@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RentMeService } from './rent-me.service'
 import { RentMeCookie } from './rent-me-cookie.service'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -20,6 +20,11 @@ export class RentMeMain {
     if(this.user == undefined){
       this.user = <User>{name: "not logged in"}
     }
+  }
+
+  api_key_test(){
+    this.rentMeService.auth_request({test: "hello"}, "user/key_test",this.user.email, this.user.api_key)
+    .subscribe(ok=> console.log(ok), error=>console.log({error: error}))
   }
 
 }

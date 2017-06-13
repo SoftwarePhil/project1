@@ -18,7 +18,7 @@
         {"email":"test@test.com", "password":"1"}
     ' "http://localhost:4000/api/user/key"
 
-
+##Auth required
 ##### api key test
 #
     curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-Busx0wUMf4A5jPlZHa8oGRApd6v0zxao" -d '
@@ -26,7 +26,20 @@
     ' "http://localhost:4000/api/user/key_test"
 
 #
+response:
     {"hello":"dp@gmail.com"}
+
+#
+
+##### update bio
+#
+    curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-Busx0wUMf4A5jPlZHa8oGRApd6v0zxao" -d '
+        {"bio":"I am a profession renter with lots of passion"}
+    ' "http://localhost:4000/api/user/bio"
+
+#
+response:
+    {"bio":"I am a profession renter with lots of passion"}
 
 #
 
@@ -36,7 +49,8 @@
     curl http://localhost:4000/api/base/locations
 
 #
-    response: ["Dallas, TX", "New York, NY", ...]
+response:
+    ["Dallas, TX", "New York, NY", ...]
 #
 
 

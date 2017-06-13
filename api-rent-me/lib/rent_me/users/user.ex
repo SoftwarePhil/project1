@@ -54,11 +54,19 @@ defmodule RentMe.Users.User do
              end
     end
 
-    def hash(password) do
+    def bio(email, bio) do
+         with {:ok, user} <- Db.get_document(Base.rent_me_users_db(), email, "failed to find user") do
+             Db.update_document(Base.rent_me_users_db(), user, "bio", bio, "bio updated")
+         else
+             {:error, msg} -> {:error, msg}
+         end        
+    end
+
+    defp hash(password) do
         Comeonin.Pbkdf2.hashpwsalt(password)
     end
 
-    def password_match(password, hash) do
+    defp password_match(password, hash) do
         Comeonin.Pbkdf2.checkpw(password, hash)
     end
 

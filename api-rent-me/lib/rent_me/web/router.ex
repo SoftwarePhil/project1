@@ -27,7 +27,9 @@ defmodule RentMe.Web.Router do
     post "/user/new", Web.UserController, :new
     post "/user/login", Web.UserController, :login 
     post "/user/key", Web.UserController, :key
+    #auth required
     post "/user/key_test", Web.UserController, :api_key_test
+    post "/user/bio", Web.UserController, :bio
     
     get "/base/locations", Web.BaseController, :all_locations
   end

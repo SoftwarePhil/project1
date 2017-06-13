@@ -30,6 +30,23 @@ export class RentMeService{
         return headers
     }
 
+    auth_request(object: any, path: string, email: string, api_key: string) :Observable<any> {
+        let body = JSON.stringify(object)
+
+        return this.http.post(this.url + path, 
+            body, {headers: this.auth_header(email, api_key)})
+            .map(data => data.json())
+    }
+
+     auth_header(email: string, api_key: string): Headers {
+        let headers = new Headers()
+        let auth = email+"-"+api_key
+        headers.append('Content-Type', 'application/json')
+        headers.append('authorization', auth)
+
+        return headers
+    }
+
     get_request(path) :Observable<any>{
         return this.http.get(this.url + path).map(data => data.json())
     }

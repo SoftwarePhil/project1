@@ -6,5 +6,5 @@ export interface User {
     bio: string
     rating: number 
     created: string
-    password_hash: string
+    api_key: string
 }
