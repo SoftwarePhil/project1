@@ -21,4 +21,8 @@ defmodule RentMe.Couch.Util do
                 |>Enum.uniq()       
         end
     end
+
+    def to_map(map) do
+        for {key, val} <- map, into: %{}, do: {String.to_atom(key), val}
+    end
 end

@@ -1,5 +1,6 @@
 defmodule RentMe.Couch.Base do
     alias RentMe.Couch.Db, as: Db
+    alias RentMe.Couch.Util, as: Util
 
     @moduledoc """
         This module will act as the connection the the rentme_db which will hold
@@ -11,6 +12,7 @@ defmodule RentMe.Couch.Base do
      @rent_me "store"
      @rent_me_users "users"
 
+    #call this function on first start up
     def init_rent_me do
         {:ok, db} = Db.init_db(@rent_me)
         {:ok, db_users} = Db.init_db(@rent_me_users)
@@ -44,7 +46,7 @@ defmodule RentMe.Couch.Base do
                     true -> false
                 end
             end)
-            db_map[location]
+            db_map[location] |> Util.to_map()
         else
              _ -> {:error, "could not load location"}
         end
@@ -55,7 +57,7 @@ defmodule RentMe.Couch.Base do
             rent_me["locations"]
             |>Enum.map(fn(map) -> 
                 [city] = Map.keys(map)
-                {city, map[city]}
+                {city, map[city] |> Util.to_map()}
             end)
         else
              _ -> {:error, "could not load location"}

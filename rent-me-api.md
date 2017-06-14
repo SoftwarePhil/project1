@@ -18,7 +18,7 @@
         {"email":"test@test.com", "password":"1"}
     ' "http://localhost:4000/api/user/key"
 
-##Auth required
+## Auth required
 ##### api key test
 #
     curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-Busx0wUMf4A5jPlZHa8oGRApd6v0zxao" -d '
@@ -27,6 +27,7 @@
 
 #
 response:
+
     {"hello":"dp@gmail.com"}
 
 #
@@ -39,6 +40,7 @@ response:
 
 #
 response:
+    
     {"bio":"I am a profession renter with lots of passion"}
 
 #
@@ -50,6 +52,7 @@ response:
 
 #
 response:
+
     ["Dallas, TX", "New York, NY", ...]
 #
 

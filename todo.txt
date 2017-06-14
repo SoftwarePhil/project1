@@ -1,1 +1,2 @@
-1. make front end auth test
+1. create a generic store genserver and supervisor(which will monitor the ets tables)
+2. make it so duplicate items cannot be added (maybe make it so that items also have unique ids just like rentals)

@@ -4,6 +4,8 @@ defmodule RentMe.Locations.Server do
     alias RentMe.Couch.Base, as: Base
     alias RentMe.Items.Store, as: ItemStore
     alias RentMe.Items.Item, as: Item
+    alias RentMe.Time.Rental, as: Rental
+    alias RentMe.Time.Store, as: RentalStore
     #locations have users and items
 
     #adding an item 
@@ -16,7 +18,8 @@ defmodule RentMe.Locations.Server do
         with {:ok, db_config} <- init_db(city),
              {:ok, _db_config} <- Base.add_location(city, db_config),
              item_ets when item_ets != false <- ItemStore.create_ets(city),
-             {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets}, name: server_name(city)) do 
+             rental_ets when rental_ets != false <- RentalStore.create_ets(city),
+             {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets, rentals: rental_ets}, name: server_name(city)) do 
                 {:ok, pid}
         else    
                 {:error, msg} -> 
@@ -29,13 +32,15 @@ defmodule RentMe.Locations.Server do
     def start_link(:reload, {city, db_config}) do
         #what if ets table still exists (the ets table does not crash with this process)
         with item_ets when item_ets != false <- ItemStore.remake_ets(city, db_config),
-             {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets}, name: server_name(city)) do 
+             rental_ets when rental_ets != false <- RentalStore.remake_ets(city, db_config),
+             {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets, rentals: rental_ets}, name: server_name(city)) do 
                 {:ok, pid}
         else    
                 {:error, _msg} -> 
                     {:error, "failed to reload location server"}
         end 
     end
+    def start_link(:reload, city), do: start_link(:reload, {city, Base.get_location_db(city)})
 
     def handle_call(:state, _from, state) do
         {:reply, state, state}
@@ -57,14 +62,28 @@ defmodule RentMe.Locations.Server do
         {:reply, {:ok, id}, state}
     end
 
+    def handle_call({:new_rental, rental}, _from, state) do
+        {:ok, {id, rental}} = RentalStore.add_item(state.rentals, rental)
+   
+        Task.start(Db, :write_document, [state.database, id, Poison.encode!(rental)])
+        Task.start(Db, :append_to_document, [state.database, "rentals", "list", id, "failed to presist item in database"])
+        {:reply, {:ok, id}, state}
+    end
+
     def state(name) do
         GenServer.call(server_name(name), :state)
     end
 
     def add_item(city, name, user, location, price, tags, description, picture) do
         #valid item??
-        item = Item.new_item(name, user, location, price, tags, description, picture)
+        #use ecto to validate
+        item = Item.new_item(name, user, city, location, price, tags, description, picture)
         GenServer.call(server_name(city), {:new_item, item})
+    end
+
+    def add_rental(item=%Item{}, user, rental_length) do
+        rental = Rental.new_rental(user, item, rental_length)
+        GenServer.call(server_name(item.city), {:new_rental, rental})
     end
 
     defp init_db(location) do
@@ -90,8 +109,10 @@ defmodule RentMe.Locations.Server do
 
     defp set_up_city_doc({:error, msg}), do: {:error, msg}
     defp set_up_city_doc({:ok, db}) do
-        case  Db.write_document(db, "items", Poison.encode!(%{"list"=>[]})) do
-            {:ok, _msg} -> {:ok, db}
+        with {:ok, _msg} <- Db.write_document(db, "items", Poison.encode!(%{"list"=>[]})),
+        {:ok, _msg} <- Db.write_document(db, "rentals", Poison.encode!(%{"list"=>[]})) do
+            {:ok, db}
+        else
             {:error, msg} -> {:error, msg}
         end
     end
