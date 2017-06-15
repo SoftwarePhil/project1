@@ -9,8 +9,8 @@ import { LoginComponent } from './login.component'
 import { RentMeService } from './rent-me.service'
 import { CreateUserComponent } from './create-user.component'
 import { RentMeMain } from './rent-me-main.component'
-import { HeaderComponent} from './header.compoenent'
-
+import { HeaderComponent} from './header.component'
+import { AddItem} from './add-item.component'
 
 import { CookieService } from 'angular2-cookie/services/cookies.service'
 import { RentMeCookie } from './rent-me-cookie.service'
@@ -22,7 +22,8 @@ import { RentMeCookie } from './rent-me-cookie.service'
     LoginComponent,
     CreateUserComponent,
     RentMeMain,
-    HeaderComponent
+    HeaderComponent,
+    AddItem
   ],
   imports: [
     BrowserModule,

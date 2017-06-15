@@ -45,6 +45,20 @@ response:
 
 #
 
+#Rentals
+##### Add Item
+#
+     curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-YKTTgiczukSiNbiOXd+HN3VcTzf5h6H/" -d '
+        {"name":"Nice Red Bike", "location":"some-gps-cords/location", "price":10, "tags":["bike", "two-wheels", "fast"],
+         "description":"a really nice bike, rides great! Rent today!", "picture":"some-picture-doc"}
+    ' "http://localhost:4000/api/rental/add"
+
+#
+response:
+
+    {"ok":"Dallas, TX:dp@gmail.com:Nice Red Bike"}
+
+
 # Base
 ##### locations
 # 

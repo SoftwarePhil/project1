@@ -1,7 +1,7 @@
 export interface User {
     email: string 
     name: string
-    location: string 
+    city: string 
     picture: string 
     bio: string
     rating: number 

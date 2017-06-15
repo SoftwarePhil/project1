@@ -27,4 +27,9 @@ export class RentMeMain {
     .subscribe(ok=> console.log(ok), error=>console.log({error: error}))
   }
 
+  edit_bio(){
+    this.rentMeService.auth_request({bio: this.user.bio}, "user/bio", this.user.email, this.user.api_key)
+    .subscribe(ok=> console.log(this.rentMeCookie.set_user(this.user)), error=>console.log({error: error}))
+  }
+
 }

@@ -5,11 +5,11 @@ defmodule RentMe.Web.UserController do
 
   #figure out how to use ECTO? might be worth it
   def new(conn,
-  %{"email"=> email, "password"=>password, "name"=>name, "location"=>location}) do
-        case User.new_user(email, password, name, location) do
+  %{"email"=> email, "password"=>password, "name"=>name, "city"=>city}) do
+        case User.new_user(email, password, name, city) do
             {:ok, user} ->
                 conn
-                |>json(user)
+                |>render("user_private.json", user)
             {:error, msg} ->
                 conn
                 |>put_status(:not_found)

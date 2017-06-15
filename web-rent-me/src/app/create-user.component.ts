@@ -36,7 +36,7 @@ export class CreateUserComponent {
       let password = this.createUser.value.password
       let name = this.createUser.value.name
 
-      let user = {name, password, email, location:this.location}
+      let user = {name, password, email, city:this.location}
      
 
       this.rentMeService.request(user, "user/new").subscribe(

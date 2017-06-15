@@ -1,0 +1,12 @@
+<h2>Add Item</h2>
+<div><label for="name">item name:</label><input [(ngModel)]=name></div>
+<div><label for="price">price per day:</label><input [(ngModel)]=price></div>
+
+<div><label for="tags_input">tags:</label>
+<input (keypress)="create_tags()" [(ngModel)]=tags_input> 
+<div><button *ngFor="let t of tags" (click)="delete_tag(t)">{{t}}</button></div> 
+</div>
+
+<div><label for="description">description:</label><input [(ngModel)]=description></div>
+<div><button (click)=save_item()>save</button></div>
+<div *ngFor="let e of errors">{{e}}</div>

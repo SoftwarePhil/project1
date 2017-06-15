@@ -1,2 +1,3 @@
-1. create a generic store genserver and supervisor(which will monitor the ets tables)
+1. create a generic store ets mdoule(ItemStore, RentalStore) and use github/danielberkompas/immortal
+2. a uer needs a list of their items that they have up for rent
 2. make it so duplicate items cannot be added (maybe make it so that items also have unique ids just like rentals)

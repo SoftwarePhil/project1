@@ -30,6 +30,8 @@ defmodule RentMe.Web.Router do
     #auth required
     post "/user/key_test", Web.UserController, :api_key_test
     post "/user/bio", Web.UserController, :bio
+
+    post "/rental/add", Web.RentalController, :add
     
     get "/base/locations", Web.BaseController, :all_locations
   end

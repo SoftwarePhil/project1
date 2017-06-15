@@ -6,7 +6,7 @@ defmodule RentMe.Web.UserView do
       %{
           email: user.email, 
           name: user.name,
-          location: user.location,  
+          city: user.city,  
           picture: user.picture,
           bio: user.bio,
           rating: user.rating,

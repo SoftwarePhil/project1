@@ -6,7 +6,8 @@ defmodule RentMe.Locations.Server do
     alias RentMe.Items.Item, as: Item
     alias RentMe.Time.Rental, as: Rental
     alias RentMe.Time.Store, as: RentalStore
-    #locations have users and items
+    alias RentMe.Users.User, as: User
+    #locations have ((users)) and items
 
     #adding an item 
     #task to write to db
@@ -74,11 +75,13 @@ defmodule RentMe.Locations.Server do
         GenServer.call(server_name(name), :state)
     end
 
-    def add_item(city, name, user, location, price, tags, description, picture) do
+    def add_item(name, email, location, price, tags, description, picture) do
         #valid item??
         #use ecto to validate
-        item = Item.new_item(name, user, city, location, price, tags, description, picture)
-        GenServer.call(server_name(city), {:new_item, item})
+        #figiure out how to save pictures ... thumbnails? seperate documents? just the id?
+        user = User.get_user(email)
+        item = Item.new_item(name, email, user.city, location, price, tags, description, picture)
+        GenServer.call(server_name(user.city), {:new_item, item})
     end
 
     def add_rental(item=%Item{}, user, rental_length) do

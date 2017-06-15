@@ -4,16 +4,16 @@ defmodule RentMe.Users.User do
 
     ##should we have an ets table that holds key, and email??
     ##api key should go in the header probably
-    @enforce_keys [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created, :api_key]
-    defstruct [:email, :password_hash, :name, :location, :picture, :bio, :rating, :created, :api_key]
+    @enforce_keys [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :api_key]
+    defstruct [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :api_key]
 
     #actual picture should be stored in seprate document
-    def new_user(email, password, name, location) do
+    def new_user(email, password, name, city) do
         %__MODULE__{
             email: email,
             password_hash: hash(password),
             name: name,
-            location: location,
+            city: city,
             picture: "picture",
             bio: "bio",
             rating: 0,
@@ -60,6 +60,14 @@ defmodule RentMe.Users.User do
          else
              {:error, msg} -> {:error, msg}
          end        
+    end
+
+    def get_user(email) do
+        with {:ok, user} <- Db.get_document(Base.rent_me_users_db(), email, "failed to find user") do
+            user |> to_struct()
+         else
+             {:error, msg} -> {:error, msg}
+         end            
     end
 
     defp hash(password) do
