@@ -38,14 +38,22 @@ export class AddItem {
                  picture: this.picture
                 }
      
-     
-     
      if(this.all_inputs_valid(item)){
         console.log(item)
 
         this.rentMeService.auth_request(item, "rental/add", this.user.email, this.user.api_key)
-        .subscribe(ok=>console.log(ok), error=>console.log(error))
+        .subscribe(ok=>this.add_item_to_user(ok), error=>console.log(error))
      }
+   }
+
+   add_item_to_user(res: any){
+    let temp: string = res.ok
+    let item = temp.split(":")
+    let item_arr = {id: temp, name: item[2]}
+    
+    this.user.items.push(item_arr)
+    //this.rentMeCookie.set_user(this.user)
+    console.log(res)
    }
 
    create_tags(){

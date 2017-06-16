@@ -4,8 +4,8 @@ defmodule RentMe.Users.User do
 
     ##should we have an ets table that holds key, and email??
     ##api key should go in the header probably
-    @enforce_keys [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :api_key]
-    defstruct [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :api_key]
+    @enforce_keys [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :items, :active_rentals, :api_key]
+    defstruct [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created,:items, :active_rentals, :api_key]
 
     #actual picture should be stored in seprate document
     def new_user(email, password, name, city) do
@@ -18,6 +18,8 @@ defmodule RentMe.Users.User do
             bio: "bio",
             rating: 0,
             created: DateTime.to_string(DateTime.utc_now()),
+            items: [],
+            active_rentals: [],
             api_key: :base64.encode(:crypto.strong_rand_bytes(24))
         }
         |>store_user
@@ -68,6 +70,10 @@ defmodule RentMe.Users.User do
          else
              {:error, msg} -> {:error, msg}
          end            
+    end
+
+    def add_item(user = %__MODULE__{}, item) do
+        Db.append_to_document(Base.rent_me_users_db(), user.email, "items", item, "failed to add item to user")
     end
 
     defp hash(password) do

@@ -11,6 +11,8 @@ defmodule RentMe.Web.UserView do
           bio: user.bio,
           rating: user.rating,
           created: user.created,
+          items: user.items,
+          active_rentals: user.active_rentals,
           api_key: user.api_key
        }
   end

@@ -45,7 +45,7 @@ response:
 
 #
 
-#Rentals
+# Rentals
 ##### Add Item
 #
      curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-YKTTgiczukSiNbiOXd+HN3VcTzf5h6H/" -d '

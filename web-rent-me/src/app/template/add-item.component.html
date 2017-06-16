@@ -10,3 +10,6 @@
 <div><label for="description">description:</label><input [(ngModel)]=description></div>
 <div><button (click)=save_item()>save</button></div>
 <div *ngFor="let e of errors">{{e}}</div>
+
+<h2>Current Items</h2>
+<div *ngFor="let o of user.items">{{o.name}}</div>

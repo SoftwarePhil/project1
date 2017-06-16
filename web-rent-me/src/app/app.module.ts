@@ -10,7 +10,8 @@ import { RentMeService } from './rent-me.service'
 import { CreateUserComponent } from './create-user.component'
 import { RentMeMain } from './rent-me-main.component'
 import { HeaderComponent} from './header.component'
-import { AddItem} from './add-item.component'
+import { AddItem } from './add-item.component'
+import { ProfileComponent } from './profile.component'
 
 import { CookieService } from 'angular2-cookie/services/cookies.service'
 import { RentMeCookie } from './rent-me-cookie.service'
@@ -23,7 +24,8 @@ import { RentMeCookie } from './rent-me-cookie.service'
     CreateUserComponent,
     RentMeMain,
     HeaderComponent,
-    AddItem
+    AddItem,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

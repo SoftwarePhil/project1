@@ -6,5 +6,9 @@ export interface User {
     bio: string
     rating: number 
     created: string
+    items: {id: string, name: string}[]
+    active_rentals: string[]
     api_key: string
 }
+
+

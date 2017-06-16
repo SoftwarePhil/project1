@@ -11,10 +11,21 @@ import { RentMeCookie } from './rent-me-cookie.service'
   styleUrls: ['template/login.component.css']
 })
 export class HeaderComponent {
+    show_profile: boolean = false
+
     constructor(private rentMeCookie: RentMeCookie, private router: Router ){}
     
     logout(){
         this.rentMeCookie.remove_user_cookie()
         this.router.navigate(['/start'])
+    }
+
+    show_profile_btn(){
+        if(this.show_profile == false){
+            this.show_profile = true
+        }
+        else{
+            this.show_profile = false
+        }
     }
 }

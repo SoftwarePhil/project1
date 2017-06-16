@@ -20,7 +20,7 @@ defmodule RentMe.Items.Store do
     #item has city now, remove city from params ..
     def add_item({ets, city}, item_struct = %Item{user: user, name: name}) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
-        item = {Item.id(city, user, name), item_struct}
+        item = {Item.id(city, user, name), name, item_struct.active, item_struct.tags, item_struct.description, item_struct.price}
         case :ets.insert(ets, item) do
             true -> 
                 {:ok, item}
@@ -37,7 +37,7 @@ defmodule RentMe.Items.Store do
             [{_id, item}] -> {:ok, item}
             _ -> {:error, "item not found"}
         end
-    end 
+    end
 
     def reload_items(database) do
         {:ok, res} = Db.get_document(database, "items", "failed to get item list")

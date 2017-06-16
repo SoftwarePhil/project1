@@ -1,0 +1,14 @@
+<div class="profile-box">
+<h1>Profile</h1>
+<p>{{user.api_key}}</p>
+<div>
+    
+<button (click)="api_key_test()">test</button>
+</div>
+
+<div>
+    <label for="bio">Bio:</label>
+    <input type="textarea" name="bio" [(ngModel)]="user.bio">
+    <button (click)="edit_bio()">save</button>
+</div>
+</div>

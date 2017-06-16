@@ -63,14 +63,7 @@ defmodule RentMe.Web.UserController do
                conn
                |>json(%{bio: bio})
            else
-               {:error, msg} -> 
-                   conn
-                   |>put_status(:not_found)
-                   |>json(%{error: msg})
-               _ ->
-                   conn
-                   |>put_status(:not_found)
-                   |>json(%{error: "failed to update bio"})
+               _ -> conn
            end
   end
 

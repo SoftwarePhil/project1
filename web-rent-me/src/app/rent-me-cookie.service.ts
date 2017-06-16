@@ -21,6 +21,7 @@ export class RentMeCookie{
             let res = this.cookieService.get(this.key)
            
             if(res == undefined){
+                console.log("failed to get user from cookie..")
                 return undefined
             }
 

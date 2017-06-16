@@ -1,4 +1,6 @@
 
 <div>
     <button (click)="logout()">logout</button>
+    <button (click)="show_profile_btn()">profile</button>
+    <div *ngIf="show_profile"><profile></profile></div>
 </div>

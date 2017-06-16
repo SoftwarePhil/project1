@@ -81,7 +81,9 @@ defmodule RentMe.Locations.Server do
         #figiure out how to save pictures ... thumbnails? seperate documents? just the id?
         user = User.get_user(email)
         item = Item.new_item(name, email, user.city, location, price, tags, description, picture)
-        GenServer.call(server_name(user.city), {:new_item, item})
+        {:ok, id} = GenServer.call(server_name(user.city), {:new_item, item})
+        Task.start(User, :add_item, [user, %{id: id, name: item.name}])
+        {:ok, id}
     end
 
     def add_rental(item=%Item{}, user, rental_length) do
