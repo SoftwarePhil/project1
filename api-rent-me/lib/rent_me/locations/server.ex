@@ -71,6 +71,19 @@ defmodule RentMe.Locations.Server do
         {:reply, {:ok, id}, state}
     end
 
+    def handle_call({:search_items, term}, _from, state) do
+        %{items: items} = state
+        list = ItemStore.search_items(items, term)
+        {:reply, {:ok, list}, state}
+    end
+
+    def handle_call({:get_item, id}, _from, state) do
+        %{items: items} = state
+        {:ok, item} = ItemStore.get_item(items, id)
+        {:reply, {:ok, item}, state}
+    end
+    
+
     def state(name) do
         GenServer.call(server_name(name), :state)
     end
@@ -89,6 +102,14 @@ defmodule RentMe.Locations.Server do
     def add_rental(item=%Item{}, user, rental_length) do
         rental = Rental.new_rental(user, item, rental_length)
         GenServer.call(server_name(item.city), {:new_rental, rental})
+    end
+
+    def search_items(city, term) do
+        GenServer.call(server_name(city), {:search_items, term})
+    end
+
+    def get_item(city, id) do
+        GenServer.call(server_name(city), {:get_item, id})
     end
 
     defp init_db(location) do

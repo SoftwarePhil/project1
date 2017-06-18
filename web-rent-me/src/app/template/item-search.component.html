@@ -1,0 +1,8 @@
+<div>
+    <select id="loc" (change)="cn.selectCity()">
+                <option *ngFor="let c of cn.cities">{{c}}</option>
+    </select>
+<input [(ngModel)]="term">
+<button (click)=search()>search</button>
+</div>
+<div *ngFor="let item of results"><b>item: {{item.name}}</b></div>

@@ -34,5 +34,7 @@ defmodule RentMe.Web.Router do
     post "/rental/add", Web.RentalController, :add
     
     get "/base/locations", Web.BaseController, :all_locations
+    post "/base/search", Web.BaseController, :search_items
+    post "/base/get_item", Web.BaseController, :get_item_details
   end
 end

@@ -70,4 +70,20 @@ response:
     ["Dallas, TX", "New York, NY", ...]
 #
 
+##### Search Items
+#
+    curl -X POST -H "Content-Type: application/json" -d '
+        {"city":"Dallas, TX", "search":"bi"}
+    ' "http://localhost:4000/api/base/search"
 
+response:
+    [{"tags":["really","fast","bike","that","will","ride","great"],"price":10,"name":"Blue Bike4","id":"Dallas, TX:test@gmail.com:Blue Bike4","description":"a nice blue bike","active":false},{"tags":["really","fast","bike","that","will","ride","great"],"price":10,"name":"Blue Bike2","id":"Dallas, TX:test@gmail.com:Blue Bike2","description":"a nice blue bike","active":false},{"tags":["really","fast","bike","that","will","ride","great"],"price":10,"name":"Blue Bike","id":"Dallas, TX:test@gmail.com:Blue Bike","description":"a nice blue bike","active":false}]
+
+##### Get Item (By id)
+#
+    curl -X POST -H "Content-Type: application/json" -d '
+        {"city":"Dallas, TX", "id":"Dallas, TX:test@gmail.com:Blue Bike2"}
+    ' "http://localhost:4000/api/base/get_item"
+
+response:
+    {"tags":["really","fast","bike","that","will","ride","great"],"price":10,"name":"Blue Bike2","id":"Dallas, TX:test@gmail.com:Blue Bike2","description":"a nice blue bike","active":false}
