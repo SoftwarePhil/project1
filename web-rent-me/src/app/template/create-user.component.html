@@ -7,8 +7,8 @@
       <input formControlName="email" type="email" placeholder="Email" required/>
       <input formControlName="password" type="password" placeholder="Password" required/>
       
-       <select id="loc" (change)="seeVal()">
-                <option *ngFor="let c of choices">{{c}}</option>
+       <select id="loc" (change)="cn.selectCity()">
+                <option *ngFor="let c of cn.cities">{{c}}</option>
         </select>
 
 

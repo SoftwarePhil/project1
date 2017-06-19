@@ -1,8 +1,7 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core'
 import { RentMeService } from './rent-me.service'
 import { RentMeCookie } from './rent-me-cookie.service'
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router'
 import { User } from './data'
 import { CityNames } from './city-names'
 
@@ -14,7 +13,7 @@ import { CityNames } from './city-names'
 
 export class ItemSeachComponent {
   results: any[]
-  city: string
+  current: any
   term: string
   error: string
   cn: CityNames
@@ -35,6 +34,11 @@ export class ItemSeachComponent {
     else{
         this.error = "please select a city and enter an item yo search for"
     }
+  }
+
+  item_click(item: any){
+    console.log(item)
+    this.current = item
   }
 
 }

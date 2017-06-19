@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RentMeService } from './rent-me.service'
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router} from '@angular/router';
+import { CityNames } from './city-names'
 
 @Component({
   selector: 'create-user',
@@ -17,9 +18,10 @@ export class CreateUserComponent {
   name: string
   createUser: FormGroup
   error: string
+  cn: CityNames
 
   constructor(public fb: FormBuilder, private rentMeService: RentMeService, private router: Router) {
-    this.get_locations()
+    this.cn = new CityNames(rentMeService)
     this.createUser = fb.group({
       name: '',
       email: '',
@@ -29,14 +31,14 @@ export class CreateUserComponent {
 
 
   newUser(event: any){
-    if(this.location != null && this.createUser.status == "VALID"){
+    if(this.cn.city != null && this.createUser.status == "VALID"){
       this.error = null
       console.log("ok valid user")
       let email = this.createUser.value.email
       let password = this.createUser.value.password
       let name = this.createUser.value.name
 
-      let user = {name, password, email, city:this.location}
+      let user = {name, password, email, city:this.cn.city}
      
 
       this.rentMeService.request(user, "user/new").subscribe(
@@ -49,25 +51,6 @@ export class CreateUserComponent {
     else{
       this.error = "Invlaid! All fields required"
     }
-  }
-
-  seeVal() {
-    var e: any = document.getElementById("loc");
-    var val = e.options[e.selectedIndex].value;
-    this.location = val
-    console.log(val)
-  }
-
-  get_locations(){
-    this.rentMeService.get_request("base/locations").subscribe(
-      loc=>this.set_loc(loc),
-      error=> this.choices = ["error getting location data"]
-    )
-  }
-
-  private set_loc(loc){
-    this.choices = loc
-    this.location = loc[0]
   }
 
 }

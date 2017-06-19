@@ -12,7 +12,8 @@ import { RentMeMain } from './rent-me-main.component'
 import { HeaderComponent} from './header.component'
 import { AddItem } from './add-item.component'
 import { ProfileComponent } from './profile.component'
-import { ItemSeachComponent } from "./item-search.component"
+import { ItemSeachComponent } from './item-search.component'
+import { ItemPreviewComponent } from './item-preview.component'
 
 import { CookieService } from 'angular2-cookie/services/cookies.service'
 import { RentMeCookie } from './rent-me-cookie.service'
@@ -27,7 +28,8 @@ import { RentMeCookie } from './rent-me-cookie.service'
     HeaderComponent,
     AddItem,
     ProfileComponent,
-    ItemSeachComponent
+    ItemSeachComponent,
+    ItemPreviewComponent
   ],
   imports: [
     BrowserModule,

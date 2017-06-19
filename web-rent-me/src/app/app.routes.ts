@@ -30,7 +30,7 @@ const routes: Routes = [
   // map '/' to '/persons' as our default route
   {
     path: '',
-    redirectTo: 'items',
+    redirectTo: 'rent',
     pathMatch: 'full'
   },
 ];

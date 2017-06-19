@@ -5,4 +5,7 @@
 <input [(ngModel)]="term">
 <button (click)=search()>search</button>
 </div>
-<div *ngFor="let item of results"><b>item: {{item.name}}</b></div>
+<div *ngFor="let item of results">
+    <b (click)=item_click(item)>item: {{item.name}}</b>
+    <div *ngIf="current == item"><item-preview [item]="item"></item-preview></div>
+</div>
