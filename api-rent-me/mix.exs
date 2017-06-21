@@ -43,7 +43,8 @@ defmodule RentMe.Mixfile do
      {:couchdb_connector, "~> 0.5.0"},
      {:cors_plug, "~> 1.1"},
      {:comeonin, "~> 3.0"},
-     {:timex, "~> 3.0"}
+     {:timex, "~> 3.0"}#,
+     #{:immortal, github: "danielberkompas/immortal"}
     ]
   end
 end

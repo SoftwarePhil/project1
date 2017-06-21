@@ -7,6 +7,7 @@ defmodule RentMe.Locations.Server do
     alias RentMe.Time.Rental, as: Rental
     alias RentMe.Time.Store, as: RentalStore
     alias RentMe.Users.User, as: User
+    alias RentMe.Locations.Supervisor, as: Super
     #locations have ((users)) and items
 
     #adding an item 
@@ -31,15 +32,21 @@ defmodule RentMe.Locations.Server do
 
     #what if ets table exists already, it should not be remade
     def start_link(:reload, {city, db_config}) do
+        IO.inspect({city, db_config})
         #what if ets table still exists (the ets table does not crash with this process)
-        with item_ets when item_ets != false <- ItemStore.remake_ets(city, db_config),
-             rental_ets when rental_ets != false <- RentalStore.remake_ets(city, db_config),
-             {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets, rentals: rental_ets}, name: server_name(city)) do 
-                {:ok, pid}
-        else    
-                {:error, _msg} -> 
+        case Super.get_ets_table_ids(city) do
+            {:ok, {items, rentals}} ->
+                 GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: items, rentals: rentals}, name: server_name(city))
+            {:error, _} ->
+                with item_ets when item_ets != false <- ItemStore.remake_ets(city, db_config),
+                   rental_ets when rental_ets != false <- RentalStore.remake_ets(city, db_config),
+                   {:ok, pid} <- GenServer.start_link(__MODULE__, %{name: city, database: db_config, items: item_ets, rentals: rental_ets}, name: server_name(city)) do 
+                        {:ok, pid}
+                else    
+                  {:error, _msg} -> 
                     {:error, "failed to reload location server"}
-        end 
+            end 
+        end
     end
     def start_link(:reload, city), do: start_link(:reload, {city, Base.get_location_db(city)})
 
@@ -110,6 +117,10 @@ defmodule RentMe.Locations.Server do
 
     def get_item(city, id) do
         GenServer.call(server_name(city), {:get_item, id})
+    end
+
+    def test_crash(city) do
+        GenServer.call(server_name(city), :crash)
     end
 
     defp init_db(location) do

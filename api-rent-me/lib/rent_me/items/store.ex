@@ -15,6 +15,13 @@ defmodule RentMe.Items.Store do
         id
     end
 
+    def test_ets(id) do
+        case :ets.info(id) do
+            :undefined -> false
+            _ -> true
+        end
+    end
+
     #item has city now, remove city from params ..
     def add_item({ets, city}, item_struct = %Item{user: user, name: name}) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
