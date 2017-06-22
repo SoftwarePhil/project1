@@ -2,8 +2,7 @@ defmodule RentMe.Users.User do
     alias RentMe.Couch.Base, as: Base
     alias RentMe.Couch.Db, as: Db
 
-    ##should we have an ets table that holds key, and email??
-    ##api key should go in the header probably
+    ##should we have an ets table that holds key, and email??, something to hold user alerts??
     @enforce_keys [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :items, :active_rentals, :api_key]
     defstruct [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created,:items, :active_rentals, :api_key]
 
@@ -74,6 +73,10 @@ defmodule RentMe.Users.User do
 
     def add_item(user = %__MODULE__{}, item) do
         Db.append_to_document(Base.rent_me_users_db(), user.email, "items", item, "failed to add item to user")
+    end
+
+    def alert_user(email) do
+       IO.puts("need to alert user "<>email)
     end
 
     defp hash(password) do

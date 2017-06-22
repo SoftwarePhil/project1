@@ -1,6 +1,10 @@
 defmodule RentMe.Time.Store do
     alias RentMe.Time.Rental, as: Rental
     alias RentMe.Couch.Db, as: Db
+    alias RentMe.Time.Server, as: Server
+
+    #these things needs their own supervisors 
+        #also should limit interaction with loction server as much as possible, should this be completely independent??
 
     #TODO: this can be made generic, it is almost the same as RentMe.Item.Store
     #find a common way to monitor all these ets tables?
@@ -23,6 +27,7 @@ defmodule RentMe.Time.Store do
     def add_item(ets, rental_struct = %Rental{event: event}) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
         rental = {event.id, rental_struct}
+        Server.add_rental(rental.item.city, rental)
         case :ets.insert(ets, rental) do
             true -> 
                 {:ok, rental}

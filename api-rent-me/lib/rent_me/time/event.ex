@@ -18,7 +18,7 @@ defmodule RentMe.Time.Event do
         is within the time frame defined.  If the number
         returned is postive the event has run over.
     """
-    def time_pased(event = %__MODULE__{}) do
+    def time_passed(event = %__MODULE__{}) do
        Timex.diff(Timex.now, event.end, :minutes) 
     end
 

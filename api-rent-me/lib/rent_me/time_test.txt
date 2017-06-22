@@ -1,0 +1,7 @@
+ 
+ RentMe.Time.Supervisor.add_location("Dallas, TX")
+ RentMe.Locations.Supervisor.add_location("Dallas, TX")
+ 
+ item = RentMe.Items.Item.new_item("some_bike", "a", "dallas", "some-loc", 5, [1,2,3], "des", "pic")
+ rental = RentMe.Time.Rental.new_rental("other_user", item, 1)
+ RentMe.Time.Server.add_rental("Dallas, TX", rental)

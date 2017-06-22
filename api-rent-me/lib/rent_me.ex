@@ -11,7 +11,8 @@ defmodule RentMe do
     children = [
       # Start the endpoint when the application starts
       supervisor(RentMe.Web.Endpoint, []),
-      supervisor(RentMe.Locations.Supervisor, [])
+      supervisor(RentMe.Locations.Supervisor, []),
+      supervisor(RentMe.Time.Supervisor, [])
       # Start your own worker by calling: RentMe.Worker.start_link(arg1, arg2, arg3)
       # worker(RentMe.Worker, [arg1, arg2, arg3]),
     ]
