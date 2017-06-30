@@ -3,7 +3,7 @@ defmodule RentMe.Time.Server do
 
     alias RentMe.Time.Rental, as: Rental
     alias RentMe.Time.Event, as: Event
-    alias RentMe.Users.User, as: User
+    alias RentMe.Users.Notifcation, as: Notifictaion
 
     @time 1000
 
@@ -34,7 +34,7 @@ defmodule RentMe.Time.Server do
             case Event.time_passed(rental.event) do
                 time when time > 0 -> 
                     IO.inspect({:send, rental.user, rental.item})
-                    User.alert_user(rental.user)
+                    Notifictaion.notify_user(rental.user, {:rental_time, :expired, :serious})
                 time -> IO.inspect({:time, time})
             end
         end)

@@ -20,16 +20,29 @@ defmodule RentMe.Time.Store do
         :ets.insert(id, {:rental, location})
   
         reload_items(database)
-        |>Enum.each(fn(rental) -> add_item(id, Rental.to_struct(rental)) end)
+        |>Enum.each(fn(rental) -> add_item(id, Rental.to_struct(rental), :ets) end)
         id
     end
 
-    def add_item(ets, rental_struct = %Rental{event: event}) do
+    
+    def add_item(ets, rental_struct = %Rental{event: event}, :ets) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
         rental = {event.id, rental_struct}
-        Server.add_rental(rental.item.city, rental)
         case :ets.insert(ets, rental) do
-            true -> 
+            true ->
+                Server.add_rental(rental.item.city, rental) 
+                {:ok, rental}
+            _ -> {:error, "failed to add item"}
+        end
+    end
+    def add_item(ets, rental_struct = %Rental{event: event}, database) do
+        #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
+        rental = {event.id, rental_struct}
+        case :ets.insert(ets, rental) do
+            true ->
+                Server.add_rental(rental.item.city, rental) 
+                Task.start(Db, :write_document, [database, event.id, rental_struct |> Poison.encode!()])
+                Task.start(Db, :append_to_document, [database, "rentals", "list", event.id, "failed to presist item in database"])
                 {:ok, rental}
             _ -> {:error, "failed to add item"}
         end

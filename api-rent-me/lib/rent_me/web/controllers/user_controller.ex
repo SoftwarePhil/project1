@@ -1,7 +1,7 @@
 defmodule RentMe.Web.UserController do
   use RentMe.Web, :controller
   alias RentMe.Users.User, as: User
-  plug :valid_api_key? when action in [:api_key_test, :bio]
+  plug :valid_api_key? when action in [:api_key_test, :bio, :picture]
 
   #figure out how to use ECTO? might be worth it
   def new(conn,
@@ -62,6 +62,16 @@ defmodule RentMe.Web.UserController do
            {:ok, _msg} <- User.bio(email, bio) do
                conn
                |>json(%{bio: bio})
+           else
+               _ -> conn
+           end
+  end
+
+  def picture(conn, %{"picture"=>pic}) do
+      with email when is_bitstring(email) <- _email(conn),
+           {:ok, _msg} <- User.set_picture(email, pic) do
+               conn
+               |>json(%{picture: pic})
            else
                _ -> conn
            end

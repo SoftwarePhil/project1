@@ -1,1 +1,20 @@
-<div>{{item.description}}, {{item.price}}$ per day</div>
+<div (click)="showMore()">
+    <b style="padding-left:1%" class="item-name-text">{{item.name}}</b> 
+    {{item.description}}, {{item.price}}$ per day 
+    <img *ngIf = "more==false" class="icon-image-right"src="assets/plus_button.png">
+</div>
+
+<div *ngIf="more" class=item-more-box>
+    <table>
+        <tr>
+        <td style="width:42%; padding:3%">
+            <p><b>tags: </b>{{item.tags}}</p>
+            <p><b>status: </b>{{printStatus()}}</p>
+            <p><b>user: </b>{{item.user}}</p>
+            <p><b>location: </b>{{item.location}}</p>
+            <button>rent me</button>
+        </td>
+        <td><img src="assets/bike.jpeg" alt="Mountain View" style="width:54%; padding-right:10%; float:right;"></td>
+        </tr>
+    </table>
+</div>

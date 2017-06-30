@@ -1,6 +1,12 @@
-1. add item picture(how to save and process it? thumbnails(should be included in the preview)? )
+0. change so all docs are written with the new writer function in DB, get rid of the old one
+1. !add item picture(how to save and process it? thumbnails(should be included in the preview)? )!
+    This should get done next
 1. item preview(improved)/full details
 2. use github/danielberkompas/immortal, think about creating a generic store ets mdoule(ItemStore, RentalStore)
 3. a user needs a list of their items that they have up for rent
 4. make it so duplicate items cannot be added (maybe make it so that items also have unique ids just like rentals)
 5 in base change location -> city
+
+Starting Couchdb
+cd rel/couchdb
+./bin/couchdb

@@ -64,6 +64,14 @@ defmodule RentMe.Couch.Base do
         end
     end
 
+    def all_users do
+        with {:ok, users} <- Db.get_document(rent_me_users_db(), "users", "failed to get load rentme document") do
+            users["users"]
+        else
+             _ -> {:error, "could not load location"}
+        end
+    end
+
     def add_user(user) do
         Db.append_to_document(rent_me_users_db(), "users", "users", user, "failed to add new location")
     end

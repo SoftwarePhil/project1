@@ -1,3 +1,29 @@
 .profile-box {
   background-color:lightslategray 
 }
+.item-more-box {
+  background-color:lightsalmon;
+  padding-bottom: 1%;
+}
+.item-search-result {
+  width: 55%;
+  background-color:burlywood;
+  text-align: 2%;
+  border-bottom-style: solid;
+  border-bottom-width: 5px;
+  border-bottom-color: blanchedalmond;
+}
+.icon-image-right {
+  width:4%;
+  align-content: right;
+  padding-top: 1%;
+  float: left;
+  padding-left: 2%; 
+  padding-right: 2%; 
+}
+.item-name-text{
+  font-size: 250%;
+}
+.title-text{
+  font-size: 500%;
+}

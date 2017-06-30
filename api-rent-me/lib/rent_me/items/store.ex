@@ -11,7 +11,7 @@ defmodule RentMe.Items.Store do
         id = :ets.new(:location, [:set, :public])
   
         reload_items(database)
-        |>Enum.each(fn(item) -> add_item({id, location}, Item.to_struct(item)) end)
+        |>Enum.each(fn(item) -> add_item({id, location}, Item.to_struct(item), :ets) end)
         id
     end
 
@@ -22,13 +22,28 @@ defmodule RentMe.Items.Store do
         end
     end
 
-    #item has city now, remove city from params ..
-    def add_item({ets, city}, item_struct = %Item{user: user, name: name}) do
+    
+    def add_item({ets, city}, item_struct = %Item{user: user, name: name}, :ets) do
         #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
         item = {Item.id(city, user, name), name, user, item_struct.active, item_struct.tags, item_struct.description, item_struct.price, item_struct.location}
         case :ets.insert(ets, item) do
-            true -> 
-                {:ok, item}
+            true ->
+                :ok
+            _ -> {:error, "failed to add item"}
+        end
+    end
+    #item has city now, remove city from params ..
+    #shouldn't this add items to the db??
+    def add_item({ets, city}, item_struct = %Item{user: user, name: name}, database) do
+       
+        #what if item exists in ets it will get overwritten? what if key exists in couchdb? should write happen here?
+        item = {Item.id(city, user, name), name, user, item_struct.active, item_struct.tags, item_struct.description, item_struct.price, item_struct.location}
+        case :ets.insert(ets, item) do
+            true ->
+                id = elem(item, 0)
+                Task.start(Db, :write_document, [database, id, Poison.encode!(item_struct)])
+                Task.start(Db, :append_to_document, [database, "items", "list", id, "failed to presist item in database"]) 
+                {:ok, id}
             _ -> {:error, "failed to add item"}
         end
     end
@@ -50,8 +65,8 @@ defmodule RentMe.Items.Store do
             fn({_, item, _, _, _, _, _, _})-> 
                search_match?(term, item)
             end) 
-            |> Enum.map(fn({id, name, _user, active, tags, des, price, _location}) -> 
-                %{id: id, name: name, active: active, tags: tags, description: des, price: price}
+            |> Enum.map(fn({id, name, user, active, tags, des, price, location}) -> 
+                %{id: id, user: user,name: name, active: active, tags: tags, description: des, price: price, location: location}
             end)
     end
     def search_match?(term, name), do: String.downcase(name) |>String.match?(Regex.compile!("#{term}"))

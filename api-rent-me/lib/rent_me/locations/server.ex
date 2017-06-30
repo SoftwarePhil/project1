@@ -62,19 +62,14 @@ defmodule RentMe.Locations.Server do
         #reply with created item
 
         #the ets knows the city no need to pass it in again??
-        {:ok, {id, item}} = ItemStore.add_item({state.items, state.name}, item)
-        #should this happen here?
-        #we also need to add the item to a list of items
-        Task.start(Db, :write_document, [state.database, id, Poison.encode!(item)])
-        Task.start(Db, :append_to_document, [state.database, "items", "list", id, "failed to presist item in database"])
+        {:ok, id} = ItemStore.add_item({state.items, state.name}, item, state.database)
+
         {:reply, {:ok, id}, state}
     end
 
     def handle_call({:new_rental, rental}, _from, state) do
-        {:ok, {id, rental}} = RentalStore.add_item(state.rentals, rental)
-   
-        Task.start(Db, :write_document, [state.database, id, Poison.encode!(rental)])
-        Task.start(Db, :append_to_document, [state.database, "rentals", "list", id, "failed to presist item in database"])
+        {:ok, id} = RentalStore.add_item(state.rentals, rental, state.database)
+
         {:reply, {:ok, id}, state}
     end
 

@@ -38,7 +38,12 @@ export class LoginComponent {
   }
 
   new_user(){
-    this.newUser = true
+    if(this.newUser == false){
+      this.newUser = true
+    }
+    else{
+      this.newUser = false
+    }
   }
 
   login(user: User){

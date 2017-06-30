@@ -19,7 +19,24 @@ defmodule RentMe.Couch.Db do
     def db_config(name) do
         %{@couch_config | database: "rent_me_"<>name}
     end
+    
+    @doc"""
+        creates a new document with some id and body
+        body must be JSON format
+    """
+    def write_document(db, key, body) do
+        case Writer.create(db, body, key) do
+            {:ok, _, _} -> {:ok, "document added"}
+            {:error, _, _} -> {:error, "cound not add document"}
+        end
+    end
 
+    def write_document(db, key, body, :map) do
+        case Couchdb.Connector.create(db, body, key) do
+            {:ok, _} -> {:ok, "document added"}
+            {:error, _} -> {:error, "cound not add document"}
+        end
+    end
 
     @doc"""
     updates a the couch db docuement.
@@ -89,16 +106,5 @@ defmodule RentMe.Couch.Db do
                     {:ok, "document deleted"}
             _ -> {:error, error}
             end
-    end
-
-    @doc"""
-        creates a new document with some id and body
-        body must be JSON format
-    """
-    def write_document(db, key, body) do
-        case Writer.create(db, body, key) do
-            {:ok, _, _} -> {:ok, "document added"}
-            {:error, _, _} -> {:error, "cound not add document"}
-        end
     end
 end

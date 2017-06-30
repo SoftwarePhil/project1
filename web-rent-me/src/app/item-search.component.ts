@@ -8,12 +8,11 @@ import { CityNames } from './city-names'
 @Component({
   selector: 'item-search',
   templateUrl: 'template/item-search.component.html',
-  styleUrls: ['template/app.component.css']
+  styleUrls: ['template/search.css']
 })
 
 export class ItemSeachComponent {
   results: any[]
-  current: any
   term: string
   error: string
   cn: CityNames
@@ -34,11 +33,6 @@ export class ItemSeachComponent {
     else{
         this.error = "please select a city and enter an item yo search for"
     }
-  }
-
-  item_click(item: any){
-    console.log(item)
-    this.current = item
   }
 
 }

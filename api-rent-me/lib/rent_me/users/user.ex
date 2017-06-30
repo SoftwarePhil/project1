@@ -1,8 +1,10 @@
 defmodule RentMe.Users.User do
     alias RentMe.Couch.Base, as: Base
     alias RentMe.Couch.Db, as: Db
+    alias RentMe.Couch.Media, as: Media
 
     ##should we have an ets table that holds key, and email??, something to hold user alerts??
+    #users are transactional to a db, this is different than how the other parts of the system work
     @enforce_keys [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created, :items, :active_rentals, :api_key]
     defstruct [:email, :password_hash, :name, :city, :picture, :bio, :rating, :created,:items, :active_rentals, :api_key]
 
@@ -63,6 +65,16 @@ defmodule RentMe.Users.User do
          end        
     end
 
+    def set_picture(email, pic) do
+        with db = Base.rent_me_users_db(), 
+            {:ok, user} <- Db.get_document(db, email, "failed to find user") do
+                Media.save_attachment(db, "picture", pic, user)
+         else
+             {:error, msg} -> {:error, msg}
+             _ -> {:error, "could not set picture"}
+         end     
+    end
+
     def get_user(email) do
         with {:ok, user} <- Db.get_document(Base.rent_me_users_db(), email, "failed to find user") do
             user |> to_struct()
@@ -73,10 +85,6 @@ defmodule RentMe.Users.User do
 
     def add_item(user = %__MODULE__{}, item) do
         Db.append_to_document(Base.rent_me_users_db(), user.email, "items", item, "failed to add item to user")
-    end
-
-    def alert_user(email) do
-       IO.puts("need to alert user "<>email)
     end
 
     defp hash(password) do

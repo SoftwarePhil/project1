@@ -14,6 +14,7 @@ import { AddItem } from './add-item.component'
 import { ProfileComponent } from './profile.component'
 import { ItemSeachComponent } from './item-search.component'
 import { ItemPreviewComponent } from './item-preview.component'
+import { StartPageComponent} from './start-page.component'
 
 import { CookieService } from 'angular2-cookie/services/cookies.service'
 import { RentMeCookie } from './rent-me-cookie.service'
@@ -29,7 +30,8 @@ import { RentMeCookie } from './rent-me-cookie.service'
     AddItem,
     ProfileComponent,
     ItemSeachComponent,
-    ItemPreviewComponent
+    ItemPreviewComponent,
+    StartPageComponent
   ],
   imports: [
     BrowserModule,

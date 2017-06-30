@@ -1,6 +1,4 @@
-<h1 align=center>{{title}}</h1>
-
-<div *ngIf="!newUser" class="login-page">
+<div *ngIf="!newUser">
   <div class="form">
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="do_login($event)">
       <input formControlName="email" type="email" placeholder="Enter Email" required/>
@@ -12,3 +10,4 @@
 </div>
 
 <div *ngIf="newUser"><create-user></create-user></div>
+<p *ngIf="newUser" class="message">Have account? <a (click)=new_user()>Login</a></p>

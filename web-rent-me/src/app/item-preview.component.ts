@@ -14,4 +14,23 @@ import { CityNames } from './city-names'
 export class ItemPreviewComponent {
   @Input()
   item: any
+  more: boolean = false
+
+  showMore(){
+    if(this.more == true){
+      this.more = false
+    }
+    else{
+      this.more = true
+    }
+  }
+
+  printStatus(){
+    if(this.item.active == false){
+      return "item is is available for rent"
+    }
+    else{
+      return "item is not able to be rented"
+    }
+  }
 }

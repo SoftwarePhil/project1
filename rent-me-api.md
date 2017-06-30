@@ -1,3 +1,5 @@
+RentMe Api
+
 # users
 ### creating a user
 
@@ -42,6 +44,19 @@ response:
 response:
 ```json 
     {"bio":"I am a profession renter with lots of passion"}
+```
+#
+### update picture -> updates/assigns a profile picture
+
+    curl -X POST -H "Content-Type: application/json" -H "authorization: dp@gmail.com-Busx0wUMf4A5jPlZHa8oGRApd6v0zxao" -d '
+        {"picture":"qQYaO..(base64 encoded picture)"}
+    ' "http://localhost:4000/api/user/update_picture"
+
+
+response:
+```json 
+    {"picture":"picturexs0FGG20U9A7MqQYaObW"}
+    --the id given to the picture--
 ```
 #
 ## Rentals
